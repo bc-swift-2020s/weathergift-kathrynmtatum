@@ -13,6 +13,7 @@
 		52C66579241871C200465B3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C66577241871C200465B3D /* Main.storyboard */; };
 		52C6657B241871C400465B3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C6657A241871C400465B3D /* Assets.xcassets */; };
 		52C6657E241871C400465B3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C6657C241871C400465B3D /* LaunchScreen.storyboard */; };
+		52C665862418720900465B3D /* LocationFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C665852418720900465B3D /* LocationFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		52C6657A241871C400465B3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52C6657D241871C400465B3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52C6657F241871C400465B3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52C665852418720900465B3D /* LocationFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				52C66571241871C200465B3D /* AppDelegate.swift */,
 				52C66573241871C200465B3D /* SceneDelegate.swift */,
 				52C66575241871C200465B3D /* ViewController.swift */,
+				52C665852418720900465B3D /* LocationFile.swift */,
 				52C66577241871C200465B3D /* Main.storyboard */,
 				52C6657A241871C400465B3D /* Assets.xcassets */,
 				52C6657C241871C400465B3D /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				52C66576241871C200465B3D /* ViewController.swift in Sources */,
 				52C66572241871C200465B3D /* AppDelegate.swift in Sources */,
+				52C665862418720900465B3D /* LocationFile.swift in Sources */,
 				52C66574241871C200465B3D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
