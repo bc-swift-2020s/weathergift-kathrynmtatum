@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LocationListViewController.swift
 //  Weather Gift
 //
 //  Created by Kathryn Tatum on 3/10/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LocationListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
@@ -52,7 +52,7 @@ class ViewController: UIViewController {
 }
 
 //MAKING CONNECTION BETWEEN TBV AND STRUCT
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension LocationListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherLocations.count
     }
@@ -63,5 +63,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            weatherLocations.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let itemToMove = weatherLocations[sourceIndexPath.row]
+        weatherLocations.remove(at: sourceIndexPath.row)
+       weatherLocations.insert(itemToMove, at: destinationIndexPath.row)
+    }
     
 }
