@@ -10,30 +10,34 @@ import UIKit
 import GooglePlaces
 
 class LocationListViewController: UIViewController {
-
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBOutlet weak var addBarButton: UIBarButtonItem!
     
 //CREATION OF ARRAY WITHIN STRUCT
     var weatherLocations: [WeatherLocation] = []
+    var selectedLocationIndex = 0
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
 //HOW TO ADD THINGS TO A STRUCT
-        var weatherLocation = WeatherLocation(name: "Chestnut Hill, MA", latitude: 0, longitude: 0)
-        weatherLocations.append(weatherLocation)
-        weatherLocation = WeatherLocation(name: "Herndon, VA", latitude: 0, longitude: 0)
-        weatherLocations.append(weatherLocation)
-        weatherLocation = WeatherLocation(name: "Prague, Czechia", latitude: 0, longitude: 0)
-        weatherLocations.append(weatherLocation)
+//        var weatherLocation = WeatherLocation(name: "Chestnut Hill, MA", latitude: 0, longitude: 0)
+//        weatherLocations.append(weatherLocation)
+//        weatherLocation = WeatherLocation(name: "Herndon, VA", latitude: 0, longitude: 0)
+//        weatherLocations.append(weatherLocation)
+//        weatherLocation = WeatherLocation(name: "Prague, Czechia", latitude: 0, longitude: 0)
+//        weatherLocations.append(weatherLocation)
         
         tableView.dataSource = self
         tableView.delegate = self
-        
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        selectedLocationIndex = tableView.indexPathForSelectedRow!.row
+    }
+    
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
         if tableView.isEditing {
             tableView.setEditing(false, animated: true)
