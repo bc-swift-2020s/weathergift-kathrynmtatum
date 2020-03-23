@@ -22,11 +22,13 @@ class WeatherDetail: WeatherLocation {
     
     struct Daily: Codable {
         var summary: String
+        var icon: String
     }
     
     var timezone = ""
     var temperature = 0
     var summary = ""
+    var dailyIcon = ""
     
     func getData(completed: @escaping () -> () ) {
         let coordinates = "\(latitude),\(longitude)"
@@ -50,10 +52,11 @@ class WeatherDetail: WeatherLocation {
             }
             
             do {
-                let result = try JSONDecoder().decode(Result.self, from: data!)
-                self.timezone = result.timezone
-                self.temperature = Int(result.currently.temperature.rounded())
-                self.summary = result.daily.summary
+                let response = try JSONDecoder().decode(Result.self, from: data!)
+                self.timezone = response.timezone
+                self.temperature = Int(response.currently.temperature.rounded())
+                self.summary = response.daily.summary
+                self.dailyIcon = response.daily.icon
             } catch {
                 print("🥵 JSON ERROR: \(error.localizedDescription)")
             }
