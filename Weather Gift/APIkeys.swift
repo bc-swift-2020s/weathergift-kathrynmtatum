@@ -10,4 +10,10 @@ import Foundation
 
 struct APIkeys {
     static let googlePlacesKey = "AIzaSyDA_lTPXbXYSM6J5SperI_0xy4j8HVhfBI"
+    static let darkSkyKey = "ad6dba6f132d900d75a5c7322b21f57b"
+}
+
+
+struct APIurls {
+    static let darkSkyURL = "https://api.darksky.net/forecast/"
 }
