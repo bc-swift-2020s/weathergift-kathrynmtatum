@@ -9,10 +9,17 @@
 import Foundation
 
 private let dateFormatter: DateFormatter = {
-    print("📆📆📆 I just created a date formatter in WeatherDetail.swift!")
+    print("📅📅📅 I JUST CREATED A DATE FORMATTER in WeatherDetail.swift!")
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "EEEE"
     return dateFormatter
+}()
+
+private let hourlyFormatter: DateFormatter = {
+    print("🕰🕰 I JUST CREATED AN HOURLY FORMATTER in WeatherDetail.swift!")
+    let hourlyFormatter = DateFormatter()
+    hourlyFormatter.dateFormat = "ha"
+    return hourlyFormatter
 }()
 
 struct DailyWeather: Codable {
@@ -23,11 +30,19 @@ struct DailyWeather: Codable {
     var dailyLow: Int
 }
 
+struct HourlyWeather: Codable {
+    var hour: String
+    var hourlyIcon: String
+    var hourlyTemperature: Int
+    var hourlyPrecipProbability: Int
+}
+
 class WeatherDetail: WeatherLocation {
     private struct Response: Codable {
         var timezone: String
         var currently: Currently
         var daily: Daily
+        var hourly: Hourly
     }
     
     private struct Currently: Codable {
@@ -49,34 +64,49 @@ class WeatherDetail: WeatherLocation {
         var temperatureLow: Double
     }
     
+    private struct Hourly: Codable {
+        var data: [HourlyData]
+    }
+    
+    private struct HourlyData: Codable {
+        var time: TimeInterval
+        var icon: String
+        var precipProbability: Double
+        var temperature: Double
+    }
+    
     var timezone = ""
     var currentTime = 0.0
     var temperature = 0
     var summary = ""
     var dailyIcon = ""
     var dailyWeatherData: [DailyWeather] = []
+    var hourlyWeatherData: [HourlyWeather] = []
     
-    func getData(completed: @escaping () -> () ) {
+    func getData(completed: @escaping ()->()) {
         let coordinates = "\(latitude),\(longitude)"
         let urlString = "\(APIurls.darkSkyURL)\(APIkeys.darkSkyKey)/\(coordinates)"
-        print("🛫 We are accessing the URL \(urlString)")
+         print("🕸 We are accessing the url \(urlString)")
         
-        //Create URL
+        // Create a URL
         guard let url = URL(string: urlString) else {
-            print("ERROR: Could not create URL from \(urlString)")
+            print("😡 ERROR: Could not create a URL from \(urlString)")
             completed()
             return
         }
         
-        //Create Session
+        // Create Session
         let session = URLSession.shared
         
-        //Get data with .dataTask method
+        // Get data with .dataTask method
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
-                print("ERROR: \(error.localizedDescription)")
+                print("😡 ERROR: \(error.localizedDescription)")
             }
             
+            // note: there are some additional things that could go wrong when using URL session, but we shouldn't experience them, so we'll ignore testing for these for now...
+            
+            // deal with the data
             do {
                 let response = try JSONDecoder().decode(Response.self, from: data!)
                 self.timezone = response.timezone
@@ -94,13 +124,25 @@ class WeatherDetail: WeatherLocation {
                     let dailyLow = Int(response.daily.data[index].temperatureLow.rounded())
                     let dailyWeather = DailyWeather(dailyIcon: dailyIcon, dailyWeekday: dailyWeekday, dailySummary: dailySummary, dailyHigh: dailyHigh, dailyLow: dailyLow)
                     self.dailyWeatherData.append(dailyWeather)
-                    print("Day: \(dailyWeather.dailyWeekday) High: \(dailyWeather.dailyHigh) Low: \(dailyWeather.dailyLow)")
+//                    print("Day: \(dailyWeather.dailyWeekday) High: \(dailyWeather.dailyHigh) Low: \(dailyWeather.dailyLow)")
+                }
+                for index in 0..<response.hourly.data.count {
+                    let hourlyDate = Date(timeIntervalSince1970: response.hourly.data[index].time)
+                    hourlyFormatter.timeZone = TimeZone(identifier: response.timezone)
+                    let hour = hourlyFormatter.string(from: hourlyDate)
+                    let hourlyIcon = response.hourly.data[index].icon
+                    let precipProbability = Int((response.hourly.data[index].precipProbability * 100).rounded())
+                    let temperature = Int(response.hourly.data[index].temperature.rounded())
+                    let hourlyWeather = HourlyWeather(hour: hour, hourlyIcon: hourlyIcon, hourlyTemperature: temperature, hourlyPrecipProbability: precipProbability)
+                    self.hourlyWeatherData.append(hourlyWeather)
+                    print("Hour: \(hourlyWeather.hour), Icon: \(hourlyWeather.hourlyIcon), Temperature: \(hourlyWeather.hourlyTemperature), PrecipProbability: \(hourlyWeather.hourlyPrecipProbability)")
                 }
             } catch {
-                print("🥵 JSON ERROR: \(error.localizedDescription)")
+                print("😡 JSON ERROR: \(error.localizedDescription)")
             }
             completed()
         }
+        
         task.resume()
     }
 }
